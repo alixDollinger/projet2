@@ -561,19 +561,31 @@ int main()
                 {
                 case sf::Keyboard::Z:
                     speed_chara.y = 0.;
-                    chara_code.replace(2, 2, "US");
+                    if (speed_chara == sf::Vector2f{ 0.f,0.f })
+                    {
+                        chara_code.replace(2, 2, "US");
+                    }
                     break;
                 case sf::Keyboard::Q:
                     speed_chara.x = 0.;
-                    chara_code.replace(2, 2, "LS");
+                    if(speed_chara == sf::Vector2f{ 0.f,0.f })
+                    {
+                        chara_code.replace(2, 2, "LS");
+                    }
                     break;
                 case sf::Keyboard::D:
                     speed_chara.x = 0.;
-                    chara_code.replace(2, 2, "RS");
+                    if (speed_chara == sf::Vector2f{ 0.f,0.f })
+                    {
+                        chara_code.replace(2, 2, "RS");
+                    }    
                     break;
                 case sf::Keyboard::S:
                     speed_chara.y = 0.;
-                    chara_code.replace(2, 2, "DS");
+                    if (speed_chara == sf::Vector2f{ 0.f,0.f })
+                    {
+                        chara_code.replace(2, 2, "DS");
+                    }
                     break;
                 }
             }
