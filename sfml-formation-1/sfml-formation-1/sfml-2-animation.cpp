@@ -16,28 +16,28 @@ En exercice supplémentaire, vous pouvez faire tourner une épée en demi cercle au
 
 */
 
-int main()
-{
-    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-
-    // limite les FPS à 60
-    window.setFramerateLimit(60);
-
-
-    while (window.isOpen())
-    {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                window.close();
-        }
-
-        window.clear();
-        window.draw(shape);
-        window.draw(sprite);
-        window.display();
-    }
-
-    return 0;
-}
+//int main()
+//{
+//    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
+//
+//    // limite les FPS à 60
+//    window.setFramerateLimit(60);
+//
+//
+//    while (window.isOpen())
+//    {
+//        sf::Event event;
+//        while (window.pollEvent(event))
+//        {
+//            if (event.type == sf::Event::Closed)
+//                window.close();
+//        }
+//
+//        window.clear();
+//        window.draw(shape);
+//        window.draw(sprite);
+//        window.display();
+//    }
+//
+//    return 0;
+//}
