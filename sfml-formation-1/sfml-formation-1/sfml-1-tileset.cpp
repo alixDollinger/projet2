@@ -2,6 +2,7 @@
 #include <map>
 #include <vector>
 #include <iostream>
+#include <cmath>        // std::abs
 using namespace sf;
 /*
 Dans cet example, vous allez devoir charger et afficher un tileset
@@ -466,6 +467,23 @@ void load_level(std::vector<std::vector<Sprite> >& level_element, Texture& textu
 
 void anim_chara(sf::Vector2f& speed_chara, std::string& chara_code, Texture& texture, sf::Clock& clock, Sprite& chara) {
     sf::Time elapsed = clock.getElapsedTime();
+    if (std::abs(speed_chara.x) > std::abs(speed_chara.y) && speed_chara.x > 0)
+    {
+        chara_code.replace(2, 1, "R");
+    }
+    if (std::abs(speed_chara.x) > std::abs(speed_chara.y) && speed_chara.x < 0)
+    {
+        chara_code.replace(2, 1, "L");
+    }
+    if (std::abs(speed_chara.x) < std::abs(speed_chara.y) && speed_chara.y < 0)
+    {
+        chara_code.replace(2, 1, "U");
+    }
+    if (std::abs(speed_chara.x) < std::abs(speed_chara.y) && speed_chara.y > 0)
+    {
+        chara_code.replace(2, 1, "D");
+    }
+
     if (elapsed.asMilliseconds() >= 250 && speed_chara != sf::Vector2f{ 0.f,0.f })
     {
         clock.restart();
@@ -490,13 +508,30 @@ void anim_chara(sf::Vector2f& speed_chara, std::string& chara_code, Texture& tex
 
 }
 
+void move_ennemy(Sprite& ennemy, Vector2f& destination, sf::Clock& clock, sf::Vector2f& speed_ennemy) {
+
+    speed_ennemy.x = (destination.x - ennemy.getPosition().x);
+    speed_ennemy.y = (destination.y - ennemy.getPosition().y);
+    float norme = sqrt(speed_ennemy.x * speed_ennemy.x + speed_ennemy.y * speed_ennemy.y);
+    if (norme > speed_ennemy.x && norme > speed_ennemy.y)
+    {
+        speed_ennemy = speed_ennemy / norme;
+    }
+}
+
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(768, 512), "SFML works!");
-    sf::Clock clock;
+    sf::Clock clock_chara;
+    sf::Clock clock_ennemy;
     std::string chara_code = "NUDS";
+    std::string enemy_code = "SKDS";
 
     sf::Vector2f speed_chara = { 0.f,0.f };
+    sf::Vector2f speed_ennemy = { 0.f,0.f };
+
+    int ennemy_des = 0;
+    bool aller = true;
 
     Texture texture;
     texture.loadFromFile("foresttiles2-t.png");
@@ -507,6 +542,20 @@ int main()
     chara.setTexture(texture_character);
     chara.setScale(4, 4);
     chara.setTextureRect(IntRect(Vector2i(1 * 16, 0 * 16), Vector2i(16, 16)));
+
+    Sprite ennemie;
+    ennemie.setTexture(texture_character);
+    ennemie.setScale(4, 4);
+    ennemie.setTextureRect(IntRect(Vector2i(10 * 16, 0 * 16), Vector2i(16, 16)));
+    ennemie.setPosition(Vector2f(500, 400));
+    std::vector<Vector2f> posEnnemy = {
+        {500,400},
+        {300.f,300.f},
+        {50.f,150.f},
+        {200.f, 49.f},
+        {250.f, 49.f},
+        {300.f, 149.f},
+    };
 
     Sprite sprite;
     sprite.setTexture(texture);
@@ -537,19 +586,19 @@ int main()
                 switch (event.key.code)
                 {
                 case sf::Keyboard::Z:
-                    speed_chara.y = -0.1;
+                    speed_chara.y = -0.5;
                     chara_code.replace(2, 1, "U");
                     break;
                 case sf::Keyboard::Q:
-                    speed_chara.x = -0.1;
+                    speed_chara.x = -0.5;
                     chara_code.replace(2, 1, "L");
                     break;
                 case sf::Keyboard::D:
-                    speed_chara.x = 0.1;
+                    speed_chara.x = 0.5;
                     chara_code.replace(2, 1, "R");
                     break;
                 case sf::Keyboard::S:
-                    speed_chara.y = 0.1;
+                    speed_chara.y = 0.5;
                     chara_code.replace(2, 1, "D");
                     break;
                 }
@@ -608,8 +657,35 @@ int main()
             speed_chara.y = 0;
         }
 
-        anim_chara(speed_chara, chara_code, texture_character, clock, chara);
+        anim_chara(speed_chara, chara_code, texture_character, clock_chara, chara);
+        anim_chara(speed_ennemy, enemy_code, texture_character, clock_ennemy, ennemie);
 
+        if (ennemie.getPosition().x <= posEnnemy[ennemy_des].x +0.5 && ennemie.getPosition().x >= posEnnemy[ennemy_des].x - 0.5)
+        {
+            if (ennemie.getPosition().y <= posEnnemy[ennemy_des].y + 0.5 && ennemie.getPosition().y >= posEnnemy[ennemy_des].y - 0.5)
+            {
+                if (ennemy_des == posEnnemy.size() - 1)
+                {
+                    aller = false;
+                }
+                if (ennemy_des == 0)
+                {
+                    aller = true;
+                }
+
+                if (aller)
+                {
+                    ennemy_des++;
+                }
+                else {
+                    ennemy_des--;
+                }
+                move_ennemy(ennemie, posEnnemy[ennemy_des], clock_ennemy, speed_ennemy);
+            }
+
+            
+        }
+        
 
         window.clear();
         for (int y = 0; y < 8; y++) {
@@ -620,8 +696,11 @@ int main()
             }
 
         }
+
         window.draw(chara);
+        window.draw(ennemie);
         chara.move(speed_chara);
+        ennemie.move(speed_ennemy);
         window.display();
     }
 
