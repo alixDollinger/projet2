@@ -19,4 +19,9 @@ protected:
 	sf::Sprite sprite;
 	sf::Vector2f speed = { 0.f,0.f };
 	std::string code;
+	int pv;
+	// 0 down; 1 up; 2 right; 3 left
+	int direction_anim = 0;
+	//0 arret; 1 right; 2 left
+	int state_anime = 0;
 };

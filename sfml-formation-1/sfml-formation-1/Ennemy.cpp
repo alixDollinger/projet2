@@ -2,6 +2,7 @@
 
 Ennemy::Ennemy(sf::Texture& _texture, std::string _code, int _scale, int _tile_size, std::vector<sf::Vector2f> _posEnnemy) : Entity(_texture, _code, _scale, _tile_size)
 {
+    pv = 3;
 	posEnnemy = _posEnnemy;
 	sprite.setPosition(posEnnemy[0]);
 }

@@ -66,7 +66,7 @@ void load_level(std::vector<std::vector<Sprite> >& level_element, Texture& textu
     }
 }
 
-void drawAll(sf::RenderWindow& window, std::vector<std::vector<Sprite> >& sol, std::vector<std::vector<Sprite> >& level_element, Player& chara, Ennemy& ennemie) {
+void drawAll(sf::RenderWindow& window, std::vector<std::vector<Sprite> >& sol, std::vector<std::vector<Sprite> >& level_element, Player& chara, Ennemy& ennemie ) {
     window.clear();
     for (int y = 0; y < 8; y++) {
 
@@ -89,11 +89,13 @@ int main()
     sf::RenderWindow window(sf::VideoMode(768, 512), "SFML works!");
     sf::Clock clock_chara;
     sf::Clock clock_ennemy;
-    std::string chara_code = "NUDS";
-    std::string enemy_code = "SKDS";
+    std::string chara_code = "NU";
+    std::string enemy_code = "SK";
 
     sf::Vector2f speed_chara = { 0.f,0.f };
     sf::Vector2f speed_ennemy = { 0.f,0.f };
+
+
 
     window.setKeyRepeatEnabled(false);
 
@@ -104,6 +106,9 @@ int main()
     texture.loadFromFile("foresttiles2-t.png");
     Texture texture_character;
     texture_character.loadFromFile("characters.png");
+    Texture texture_sword;
+    texture_sword.loadFromFile("sword.png");
+
 
     std::vector<Vector2f> posEnnemy = {
         {350,400},
@@ -114,7 +119,7 @@ int main()
         {300.f, 249.f},
     };
 
-    Player chara = Player(texture_character, chara_code, scale, tile_size);
+    Player chara = Player(texture_character, texture_sword, chara_code, scale, tile_size);
     Ennemy ennemie = Ennemy(texture_character, enemy_code, scale, tile_size, posEnnemy);
 
     posEnnemy.~vector();
@@ -143,13 +148,18 @@ int main()
             if (event.type == sf::Event::Closed)
                 window.close();
             chara.movement_player(event);
+            chara.attak(event);
         }
 
+        
         chara.collision_border(scale, tile_size);
         chara.anim_chara(texture_character, clock_chara, tile_size);
-        ennemie.anim_chara(texture_character, clock_chara, tile_size);
+        ennemie.anim_chara(texture_character, clock_ennemy, tile_size);
         ennemie.passing_ennemy(clock_ennemy);
-
+        if (chara.getAttaquer())
+        {
+            chara.anim_attack();
+        }
         drawAll(window, sol, level_element, chara, ennemie);
         
     }
