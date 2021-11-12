@@ -16,7 +16,7 @@ public:
     bool& getAttaquer() { return attaquer; };
 private:
     int atk = 3;
-    float atk_speed = 500;
+    float atk_speed = 0.5;
     bool attaquer = false;
     sf::Sprite sprite_sword;
     sf::Clock timing_atk;

@@ -148,7 +148,12 @@ int main()
             if (event.type == sf::Event::Closed)
                 window.close();
             chara.movement_player(event);
-            chara.attak(event);
+
+            if (!chara.getAttaquer())
+            {
+                chara.attak(event);
+            }
+            
         }
 
         

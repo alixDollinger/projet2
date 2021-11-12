@@ -22,10 +22,10 @@ void Player::movement_player(sf::Event& event)
     {
         switch (event.key.code)
         {
-        case sf::Keyboard::Z:
+        case sf::Keyboard::Z: case sf::Keyboard::W:
             speed.y = -0.5;
             break;
-        case sf::Keyboard::Q:
+        case sf::Keyboard::Q:case sf::Keyboard::A:
             speed.x = -0.5;
             break;
         case sf::Keyboard::D:
@@ -41,10 +41,10 @@ void Player::movement_player(sf::Event& event)
     {
         switch (event.key.code)
         {
-        case sf::Keyboard::Z:
+        case sf::Keyboard::Z:case sf::Keyboard::W:
             speed.y = 0.;
             break;
-        case sf::Keyboard::Q:
+        case sf::Keyboard::Q:case sf::Keyboard::A:
             speed.x = 0.;
             break;
         case sf::Keyboard::D:
@@ -63,8 +63,9 @@ void Player::attak(sf::Event& event)
 {
     if (event.type == sf::Event::KeyPressed)
     {
-        if (event.key.code == sf::Keyboard::Space) {
+        if (event.key.code == sf::Keyboard::F) {
             attaquer = true;
+            timing_atk.restart();
         }
     }
 }
@@ -101,7 +102,7 @@ void Player::update()
 
 void Player::anim_attack()
 {
-    if (timing_atk.getElapsedTime().asSeconds() >= 1 && etat_anim_atk)
+    if (timing_atk.getElapsedTime().asSeconds() >= atk_speed && etat_anim_atk)
     {
         etat_anim_atk = false;
         attaquer = false;
@@ -110,7 +111,6 @@ void Player::anim_attack()
     if (!etat_anim_atk)
     {
         etat_anim_atk = true;
-        timing_atk.restart();
         switch (direction_anim)
         {
         case 1:
@@ -132,16 +132,20 @@ void Player::anim_attack()
         switch (direction_anim)
         {
         case 1:
-            sprite_sword.setRotation(-135 + 90 * timing_atk.getElapsedTime().asSeconds());
+            sprite_sword.setRotation(-135 + 90 * timing_atk.getElapsedTime().asSeconds()/atk_speed);
+            //sprite_sword.rotate(9 * timing_atk.getElapsedTime().asSeconds());
             break;
         case 2:
-            sprite_sword.setRotation(-45 + 90 * timing_atk.getElapsedTime().asSeconds());
+            sprite_sword.setRotation(-45 + 90 * timing_atk.getElapsedTime().asSeconds() / atk_speed);
+            //sprite_sword.rotate(9 * timing_atk.getElapsedTime().asSeconds());
             break;
         case 3:
-            sprite_sword.setRotation(135 + 90 * timing_atk.getElapsedTime().asSeconds());
+            sprite_sword.setRotation(135 + 90 * timing_atk.getElapsedTime().asSeconds() / atk_speed);
+            //sprite_sword.rotate(9 * timing_atk.getElapsedTime().asSeconds());
             break;
         default:
-            sprite_sword.setRotation(45 + 90 * timing_atk.getElapsedTime().asSeconds());
+            sprite_sword.setRotation(45 + 90 * timing_atk.getElapsedTime().asSeconds() / atk_speed);
+            //sprite_sword.rotate(9 * timing_atk.getElapsedTime().asSeconds());
             break;
         }
     }
