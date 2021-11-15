@@ -1,4 +1,5 @@
 #include "Player.h"
+#include <iostream>
 
 
 Player::Player(sf::Texture& _texture_chara, sf::Texture& _texture_sword, std::string _code, int _scale, int _tile_size) : Entity(_texture_chara, _code, _scale, _tile_size)
@@ -23,16 +24,16 @@ void Player::movement_player(sf::Event& event)
         switch (event.key.code)
         {
         case sf::Keyboard::Z: case sf::Keyboard::W:
-            speed.y = -0.5;
+            speed.y = -1;
             break;
         case sf::Keyboard::Q:case sf::Keyboard::A:
-            speed.x = -0.5;
+            speed.x = -1;
             break;
         case sf::Keyboard::D:
-            speed.x = 0.5;
+            speed.x = 1;
             break;
         case sf::Keyboard::S:
-            speed.y = 0.5;
+            speed.y = 1;
             break;
         }
     }
@@ -82,21 +83,6 @@ void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
 void Player::update()
 {
     Entity::update();
-    /*switch (direction_anim)
-    {
-    case 1:
-        sprite_sword.setRotation(-90);
-        break;
-    case 2:
-        sprite_sword.setRotation(0);
-        break;
-    case 3:
-        sprite_sword.setRotation(180);
-        break;
-    default:
-        sprite_sword.setRotation(90);
-        break;
-    }*/
     sprite_sword.move(speed);
 }
 
@@ -133,22 +119,24 @@ void Player::anim_attack()
         {
         case 1:
             sprite_sword.setRotation(-135 + 90 * timing_atk.getElapsedTime().asSeconds()/atk_speed);
-            //sprite_sword.rotate(9 * timing_atk.getElapsedTime().asSeconds());
             break;
         case 2:
             sprite_sword.setRotation(-45 + 90 * timing_atk.getElapsedTime().asSeconds() / atk_speed);
-            //sprite_sword.rotate(9 * timing_atk.getElapsedTime().asSeconds());
             break;
         case 3:
             sprite_sword.setRotation(135 + 90 * timing_atk.getElapsedTime().asSeconds() / atk_speed);
-            //sprite_sword.rotate(9 * timing_atk.getElapsedTime().asSeconds());
             break;
         default:
             sprite_sword.setRotation(45 + 90 * timing_atk.getElapsedTime().asSeconds() / atk_speed);
-            //sprite_sword.rotate(9 * timing_atk.getElapsedTime().asSeconds());
             break;
         }
     }
+}
+
+void Player::hitEnnemy(Ennemy& ennemy)
+{
+    
+
 }
 
 
