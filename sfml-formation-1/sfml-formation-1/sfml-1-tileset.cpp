@@ -86,6 +86,7 @@ void drawAll(sf::RenderWindow& window, std::vector<std::vector<Sprite> >& sol, s
 
 int main()
 {
+    
     sf::RenderWindow window(sf::VideoMode(768, 512), "SFML works!");
     sf::Clock clock_chara;
     sf::Clock clock_ennemy;
@@ -98,6 +99,7 @@ int main()
     window.setFramerateLimit(60);
 
     window.setKeyRepeatEnabled(false);
+    window.setFramerateLimit(60);
 
     int scale = 4;
     int tile_size = 16;
@@ -166,11 +168,15 @@ int main()
         
         chara.collision_border(scale, tile_size);
         chara.anim_chara(texture_character, clock_chara, tile_size);
-        ennemie.anim_chara(texture_character, clock_ennemy, tile_size);
-        ennemie.passing_ennemy(clock_ennemy);
+        /*ennemie.anim_chara(texture_character, clock_ennemy, tile_size);
+        ennemie.passing_ennemy(clock_ennemy);*/
         if (chara.getAttaquer())
         {
             chara.anim_attack();
+            if (chara.getTimingAtk().getElapsedTime().asSeconds() <= 0.25 +0.05 && chara.getTimingAtk().getElapsedTime().asSeconds() <= 0.25 + 0.05) {
+                chara.hitEnnemy(ennemie);
+            }
+            
         }
 
         viewchara.move(chara.getSpeed().x, chara.getSpeed().y);

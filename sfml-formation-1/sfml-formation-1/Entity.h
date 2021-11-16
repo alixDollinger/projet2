@@ -12,7 +12,7 @@ public:
 	void update();
 	void collision_border(int scale, int tile_size);
 	void anim_chara(sf::Texture& texture, sf::Clock& clock, int tile_size);
-	sf::Sprite getSprite() { return sprite; };
+	sf::Sprite& getSprite() { return sprite; };
 	sf::Vector2f getSpeed() { return speed; };
 
 protected:

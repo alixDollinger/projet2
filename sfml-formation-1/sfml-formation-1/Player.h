@@ -1,5 +1,6 @@
 #pragma once
 #include "Entity.h"
+#include "Ennemy.h"
 class Player :
     public Entity
 {
@@ -14,6 +15,8 @@ public:
     void update();
     void anim_attack();
     bool& getAttaquer() { return attaquer; };
+    sf::Clock& getTimingAtk() { return timing_atk; };
+    void hitEnnemy(Ennemy& ennemy);
 private:
     int atk = 3;
     float atk_speed = 0.5;
