@@ -161,16 +161,20 @@ int main()
         
         chara.collision_border(scale, tile_size);
         chara.anim_chara(texture_character, clock_chara, tile_size);
-        /*ennemie.anim_chara(texture_character, clock_ennemy, tile_size);
-        ennemie.passing_ennemy(clock_ennemy);*/
+        ennemie.anim_chara(texture_character, clock_ennemy, tile_size);
+        ennemie.passing_ennemy(clock_ennemy);
+
         if (chara.getAttaquer())
         {
-            chara.anim_attack();
+           /* chara.anim_attack(ennemie);
             if (chara.getTimingAtk().getElapsedTime().asSeconds() <= 0.25 +0.05 && chara.getTimingAtk().getElapsedTime().asSeconds() <= 0.25 + 0.05) {
                 chara.hitEnnemy(ennemie);
-            }
+            }*/
             
         }
+        ennemie.hitPlayer(chara);
+        chara.invinsibiliter();
+        ennemie.invinsibiliter();
         drawAll(window, sol, level_element, chara, ennemie);
         
     }

@@ -119,9 +119,39 @@ void Entity::anim_chara(sf::Texture& texture, sf::Clock& clock, int tile_size) {
         break;
     }
 
+    if (invincible)
+    {
+
+        
+
+        sprite.setColor(sf::Color(255, 255, 255, 128));
+    }
+    else {
+        sprite.setColor(sf::Color(255, 255, 255, 255));
+    }
+
     std::string chara_name = character::chara_aliasses.at(tmp_code);
     sf::Vector2i offset = character::chara_offset.at(chara_name);
     sprite.setTextureRect(sf::IntRect(sf::Vector2i(offset.x * tile_size, offset.y * tile_size), sf::Vector2i(tile_size, tile_size)));
 
 }
+
+void Entity::setIs_it(bool _is_hit)
+{
+    is_hit = _is_hit;
+}
+
+void Entity::invinsibiliter()
+{
+    if (is_hit && !invincible)
+    {
+        invincible_timing.restart();
+        invincible = true;
+    }
+    else if (invincible && invincible_timing.getElapsedTime().asSeconds() >= invinsible_time)
+    {
+        invincible = false;
+    }
+}
+
 

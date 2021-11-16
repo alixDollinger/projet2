@@ -1,5 +1,6 @@
 #include "Ennemy.h"
 
+
 Ennemy::Ennemy(sf::Texture& _texture, std::string _code, int _scale, int _tile_size, std::vector<sf::Vector2f> _posEnnemy) : Entity(_texture, _code, _scale, _tile_size)
 {
     pv = 3;
@@ -45,5 +46,15 @@ void Ennemy::move_ennemy(sf::Vector2f& destination, sf::Clock& clock) {
     if (norme > speed.x && norme > speed.y)
     {
         speed = speed / norme;
+    }
+}
+
+void Ennemy::hitPlayer(Player& player)
+{
+    if (sprite.getGlobalBounds().intersects(player.getSprite().getGlobalBounds()) && !player.getIs_it())
+    {
+        player.setIs_it(true);
+        player.take_damage(1);
+
     }
 }
