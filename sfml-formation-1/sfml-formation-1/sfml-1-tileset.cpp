@@ -96,7 +96,7 @@ int main()
     sf::Vector2f speed_chara = { 0.f,0.f };
     sf::Vector2f speed_ennemy = { 0.f,0.f };
 
-
+    window.setFramerateLimit(60);
 
     window.setKeyRepeatEnabled(false);
     window.setFramerateLimit(60);
@@ -126,6 +126,11 @@ int main()
 
     posEnnemy.~vector();
 
+    int WidthView = 300;
+    int HeightView = 300;
+    sf::View viewchara(sf::FloatRect(chara.getPosition().x-(WidthView/2 -(tile_size/2)*4), chara.getPosition().y-(HeightView / 2 - (tile_size / 2) * 4), WidthView, HeightView));
+
+
     Sprite sprite;
     sprite.setTexture(texture);
     sprite.setScale(scale, scale);
@@ -141,6 +146,8 @@ int main()
         }
         sol.push_back(tmp);
     }
+
+    
 
     while (window.isOpen())
     {
@@ -175,7 +182,12 @@ int main()
         ennemie.hitPlayer(chara);
         chara.invinsibiliter();
         ennemie.invinsibiliter();
+
+        viewchara.move(chara.getSpeed().x, chara.getSpeed().y);
+        window.setView(viewchara);
+        
         drawAll(window, sol, level_element, chara, ennemie);
+        
         
     }
 
