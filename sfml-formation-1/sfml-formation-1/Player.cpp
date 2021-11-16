@@ -60,6 +60,43 @@ void Player::movement_player(sf::Event& event)
 
 }
 
+void Player::movement_cheval(sf::Event& event) {
+    int pousseex, pousseey;
+    poussee = 0;
+    if (event.type == sf::Event::KeyPressed)
+    {
+        switch (event.key.code)
+        {
+        case sf::Keyboard::Z: case sf::Keyboard::W:
+            poussee = 100;
+            break;
+        case sf::Keyboard::D:
+            angle_direction += 0.3;
+            break;
+        case sf::Keyboard::Q:
+            angle_direction -= 0.3;
+            break;
+        case sf::Keyboard::S:
+            poussee = -100;
+            break;
+        }
+    }
+    //acceleration.x = poussee * cos(angle_direction);
+    //acceleration.y = poussee * sin(angle_direction);
+    // acceleration.x = ((1 / masse) * poussee) - ((1.05 / masse) * speed.x);
+    pousseex = poussee * cos(angle_direction);
+    pousseey = poussee * sin(angle_direction);
+    acceleration.x = ((1 / masse) * pousseex) - ((0.48 / masse) * speed.x);
+    acceleration.y = ((1 / masse) * pousseey) - ((0.48 / masse) * speed.y);
+
+    speed.x += acceleration.x;
+    speed.y += acceleration.y;
+    std::cout << "speed:" << speed.x << " " << speed.y << "\n" << std::endl;
+    std::cout << "angle:" << angle_direction << "\n" << std::endl;
+    //speed.x = speed.x * 0.90;
+    //speed.y = speed.y * 0.90;
+}
+
 void Player::attak(sf::Event& event)
 {
     if (event.type == sf::Event::KeyPressed)

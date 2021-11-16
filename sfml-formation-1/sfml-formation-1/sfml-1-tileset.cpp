@@ -68,9 +68,9 @@ void load_level(std::vector<std::vector<Sprite> >& level_element, Texture& textu
 
 void drawAll(sf::RenderWindow& window, std::vector<std::vector<Sprite> >& sol, std::vector<std::vector<Sprite> >& level_element, Player& chara, Ennemy& ennemie ) {
     window.clear();
-    for (int y = 0; y < 8; y++) {
+    for (int y = 0; y < 9; y++) {
 
-        for (int x = 0; x < 12; x++) {
+        for (int x = 0; x < 13; x++) {
             window.draw(sol[y][x]);
             window.draw(level_element[y][x]);
         }
@@ -138,9 +138,9 @@ int main()
     std::vector<std::vector<Sprite> > sol;
     std::vector<std::vector<Sprite> > level_element;
     load_level(level_element,texture,scale, tile_size);
-    for (int y = 0; y < 8; y++) {
+    for (int y = 0; y < 15; y++) {
         std::vector<Sprite> tmp;
-        for (int x = 0; x < 12; x++) {
+        for (int x = 0; x < 13; x++) {
             sprite.setPosition(x * tile_size * scale, y * tile_size * scale);
             tmp.push_back(sprite);
         }
@@ -156,12 +156,30 @@ int main()
         {
             if (event.type == sf::Event::Closed)
                 window.close();
-            chara.movement_player(event);
-
+            if (chara.getCheval() == 0) {
+                //chara.movement_player(event);
+                chara.movement_cheval(event);
+            }
+            if (chara.getCheval() == 1) {
+                
+            }
             if (!chara.getAttaquer())
             {
                 chara.attak(event);
             }
+            if (event.type == sf::Event::KeyPressed)
+                switch (event.key.code)
+                {
+                case sf::Keyboard::B:
+                    if (chara.getCheval() == 0) {
+                        //cheval = 1;
+                    }
+                    else if (chara.getCheval() == 1) {
+                        //cheval = 0;
+                    }
+                    break;
+                }
+
             
         }
 
