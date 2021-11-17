@@ -19,6 +19,8 @@ public:
     sf::Clock& getTimingAtk() { return timing_atk; };
     void hitEnnemy(Ennemy& ennemy);
     bool& getCheval() { return etat_cheval; };
+    void setcheval(bool etat) { etat_cheval = etat; }
+    void movepoussee();
 private:
     int atk = 3;
     float atk_speed = 0.5;
@@ -32,6 +34,7 @@ private:
     float angle_direction = 0;
     float poussee = 0;
     float masse = 252;
+    int directionKey = 0;
 
 };
 

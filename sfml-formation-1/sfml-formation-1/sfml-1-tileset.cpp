@@ -157,11 +157,11 @@ int main()
             if (event.type == sf::Event::Closed)
                 window.close();
             if (chara.getCheval() == 0) {
-                //chara.movement_player(event);
-                chara.movement_cheval(event);
+                chara.movement_player(event);
+                
             }
             if (chara.getCheval() == 1) {
-                
+                chara.movement_cheval(event);
             }
             if (!chara.getAttaquer())
             {
@@ -172,10 +172,10 @@ int main()
                 {
                 case sf::Keyboard::B:
                     if (chara.getCheval() == 0) {
-                        //cheval = 1;
+                        chara.setcheval(true);
                     }
                     else if (chara.getCheval() == 1) {
-                        //cheval = 0;
+                        chara.setcheval(false);
                     }
                     break;
                 }
@@ -195,6 +195,9 @@ int main()
                 chara.hitEnnemy(ennemie);
             }
             
+        }
+        if (chara.getCheval() == 1) {
+            chara.movepoussee();
         }
 
         viewchara.move(chara.getSpeed().x, chara.getSpeed().y);

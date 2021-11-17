@@ -61,40 +61,83 @@ void Player::movement_player(sf::Event& event)
 }
 
 void Player::movement_cheval(sf::Event& event) {
-    int pousseex, pousseey;
-    poussee = 0;
     if (event.type == sf::Event::KeyPressed)
     {
         switch (event.key.code)
         {
         case sf::Keyboard::Z: case sf::Keyboard::W:
-            poussee = 100;
+            poussee = 10;
             break;
         case sf::Keyboard::D:
-            angle_direction += 0.3;
+            directionKey = 1;
             break;
         case sf::Keyboard::Q:
-            angle_direction -= 0.3;
+            directionKey = 2;
             break;
         case sf::Keyboard::S:
-            poussee = -100;
+            poussee = -10;
             break;
         }
     }
+
+    if (event.type == sf::Event::KeyReleased)
+    {
+        switch (event.key.code)
+        {
+        case sf::Keyboard::Z:case sf::Keyboard::W:
+            poussee = 0;
+            break;
+        case sf::Keyboard::D:
+            directionKey = 0;
+            break;
+        case sf::Keyboard::Q:
+            directionKey = 0;
+            break;
+        case sf::Keyboard::S:
+            poussee = 0;
+            break;
+        }
+    }
+
+    
     //acceleration.x = poussee * cos(angle_direction);
     //acceleration.y = poussee * sin(angle_direction);
     // acceleration.x = ((1 / masse) * poussee) - ((1.05 / masse) * speed.x);
+
+}
+void Player::movepoussee(){
+    int pousseex, pousseey;
+
+    switch (directionKey)
+    {
+    case 1:
+        angle_direction += 0.03;
+        break;
+    case 2:
+        angle_direction -= 0.03;
+        break;
+    default:
+        break;
+    }
+    
     pousseex = poussee * cos(angle_direction);
     pousseey = poussee * sin(angle_direction);
-    acceleration.x = ((1 / masse) * pousseex) - ((0.48 / masse) * speed.x);
-    acceleration.y = ((1 / masse) * pousseey) - ((0.48 / masse) * speed.y);
+    acceleration.x = ((1 / masse) * pousseex) - ((1.05 / masse) * speed.x);
+    acceleration.y = ((1 / masse) * pousseey) - ((1.05 / masse) * speed.y);
 
     speed.x += acceleration.x;
     speed.y += acceleration.y;
-    std::cout << "speed:" << speed.x << " " << speed.y << "\n" << std::endl;
-    std::cout << "angle:" << angle_direction << "\n" << std::endl;
     //speed.x = speed.x * 0.90;
     //speed.y = speed.y * 0.90;
+    std::cout <<"speed x = " << speed.x << "\n";
+    std::cout << "speed y = " << speed.y << "\n";
+    std::cout << "acceleration x = " << acceleration.x << "\n";
+    std::cout << "acceleration y = " << acceleration.y << "\n";
+    std::cout << "poussee = " << poussee << "\n";
+    std::cout << "directionKey = " << directionKey << "\n";
+    
+
+
 }
 
 void Player::attak(sf::Event& event)
