@@ -17,6 +17,7 @@ public:
 	bool& getInvincible() { return invincible; };
 	void invinsibiliter();
 	void take_damage(int damage) { pv -= damage; };
+	bool is_alive();
 protected:
 	sf::Sprite sprite;
 	sf::Vector2f speed = { 0.f,0.f };
@@ -24,7 +25,7 @@ protected:
 	bool is_hit = false;
 	bool invincible = false;
 	sf::Clock invincible_timing;
-	float invinsible_time = 0.5;
+	float invinsible_time = 1;
 	int pv;
 	// 0 down; 1 up; 2 right; 3 left
 	int direction_anim = 0;

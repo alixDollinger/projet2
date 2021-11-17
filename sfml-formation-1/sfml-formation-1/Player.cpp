@@ -139,14 +139,4 @@ void Player::anim_attack(Ennemy& enemy)
     }
 }
 
-void Player::hitEnnemy(Ennemy& ennemy)
-{
-    if (sprite_sword.getGlobalBounds().intersects(ennemy.getSprite().getGlobalBounds()) && !ennemy.getIs_it())
-    {
-        ennemy.setIs_it(true);
-        ennemy.take_damage(1);
-
-    }
-}
-
 

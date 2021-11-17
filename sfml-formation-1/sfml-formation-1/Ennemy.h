@@ -1,6 +1,5 @@
 #pragma once
 #include "Entity.h"
-#include "Player.h"
 
 class Ennemy :
     public Entity
@@ -12,7 +11,6 @@ public:
     void passing_ennemy(sf::Clock& clock_ennemy);
 
     void move_ennemy(sf::Vector2f& destination, sf::Clock& clock);
-    void hitPlayer(Player& player);
 
 private:
     std::vector<sf::Vector2f> posEnnemy;

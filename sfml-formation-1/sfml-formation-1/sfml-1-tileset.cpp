@@ -77,11 +77,41 @@ void drawAll(sf::RenderWindow& window, std::vector<std::vector<Sprite> >& sol, s
 
     }
 
+    
+    if (ennemie.is_alive())
+    {
+        window.draw(ennemie);
+        ennemie.update();
+    }
     window.draw(chara);
-    window.draw(ennemie);
     chara.update();
-    ennemie.update();
     window.display();
+}
+
+void entity_hit(Player& chara, Ennemy& ennemy) {
+
+    
+  
+    if (chara.getAttaquer())
+    {
+        chara.anim_attack(ennemy);
+
+        if (chara.getSprite_sword().getGlobalBounds().intersects(ennemy.getSprite().getGlobalBounds()) && !ennemy.getIs_it() && !ennemy.getInvincible() && ennemy.is_alive())
+        {
+
+            ennemy.setIs_it(true);
+            ennemy.take_damage(1);
+        }
+
+    }
+    else if (ennemy.getSprite().getGlobalBounds().intersects(chara.getSprite().getGlobalBounds()) && !chara.getIs_it() && !chara.getInvincible() && ennemy.is_alive())
+    {
+        chara.setIs_it(true);
+        chara.take_damage(1);
+
+    }
+
+    
 }
 
 int main()
@@ -149,7 +179,7 @@ int main()
 
     
 
-    while (window.isOpen())
+    while (window.isOpen() && chara.is_alive())
     {
         sf::Event event;
         while (window.pollEvent(event))
@@ -168,20 +198,18 @@ int main()
         
         chara.collision_border(scale, tile_size);
         chara.anim_chara(texture_character, clock_chara, tile_size);
-        ennemie.anim_chara(texture_character, clock_ennemy, tile_size);
-        ennemie.passing_ennemy(clock_ennemy);
 
-        if (chara.getAttaquer())
+        if (ennemie.is_alive())
         {
-           /* chara.anim_attack(ennemie);
-            if (chara.getTimingAtk().getElapsedTime().asSeconds() <= 0.25 +0.05 && chara.getTimingAtk().getElapsedTime().asSeconds() <= 0.25 + 0.05) {
-                chara.hitEnnemy(ennemie);
-            }*/
-            
+            ennemie.anim_chara(texture_character, clock_ennemy, tile_size);
+            ennemie.passing_ennemy(clock_ennemy);
+            ennemie.invinsibiliter();
         }
-        ennemie.hitPlayer(chara);
+       
+
+        entity_hit(chara, ennemie);
         chara.invinsibiliter();
-        ennemie.invinsibiliter();
+        
 
         viewchara.move(chara.getSpeed().x, chara.getSpeed().y);
         window.setView(viewchara);

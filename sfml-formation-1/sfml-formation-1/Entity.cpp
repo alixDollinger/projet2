@@ -45,7 +45,11 @@ void Entity::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 void Entity::update()
 {
-    sprite.move(speed);
+    if (is_alive())
+    {
+        sprite.move(speed);
+    }
+    
 }
 
 void Entity::anim_chara(sf::Texture& texture, sf::Clock& clock, int tile_size) {
@@ -121,9 +125,6 @@ void Entity::anim_chara(sf::Texture& texture, sf::Clock& clock, int tile_size) {
 
     if (invincible)
     {
-
-        
-
         sprite.setColor(sf::Color(255, 255, 255, 128));
     }
     else {
@@ -151,7 +152,17 @@ void Entity::invinsibiliter()
     else if (invincible && invincible_timing.getElapsedTime().asSeconds() >= invinsible_time)
     {
         invincible = false;
+        is_hit = false;
     }
+}
+
+bool Entity::is_alive()
+{
+    if (pv>0)
+    {
+        return true;
+    }
+    return false;
 }
 
 

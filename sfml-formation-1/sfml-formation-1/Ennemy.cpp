@@ -49,12 +49,3 @@ void Ennemy::move_ennemy(sf::Vector2f& destination, sf::Clock& clock) {
     }
 }
 
-void Ennemy::hitPlayer(Player& player)
-{
-    if (sprite.getGlobalBounds().intersects(player.getSprite().getGlobalBounds()) && !player.getIs_it())
-    {
-        player.setIs_it(true);
-        player.take_damage(1);
-
-    }
-}

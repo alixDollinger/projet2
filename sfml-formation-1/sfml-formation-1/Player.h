@@ -17,7 +17,7 @@ public:
     void anim_attack(Ennemy& enemy);
     bool& getAttaquer() { return attaquer; };
     sf::Clock& getTimingAtk() { return timing_atk; };
-    void hitEnnemy(Ennemy& ennemy);
+    sf::Sprite& getSprite_sword() { return sprite_sword; }
 private:
     int atk = 3;
     float atk_speed = 0.5;
