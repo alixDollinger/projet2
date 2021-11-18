@@ -76,7 +76,6 @@ void drawAll(sf::RenderWindow& window, std::vector<std::vector<Sprite> >& sol, s
         }
 
     }
-
     
     if (ennemie.is_alive())
     {
@@ -89,9 +88,6 @@ void drawAll(sf::RenderWindow& window, std::vector<std::vector<Sprite> >& sol, s
 }
 
 void entity_hit(Player& chara, Ennemy& ennemy) {
-
-    
-  
     if (chara.getAttaquer())
     {
         chara.anim_attack(ennemy);
@@ -111,12 +107,10 @@ void entity_hit(Player& chara, Ennemy& ennemy) {
 
     }
 
-    
 }
 
 int main()
-{
-    
+{  
     sf::RenderWindow window(sf::VideoMode(768, 512), "SFML works!");
     sf::Clock clock_chara;
     sf::Clock clock_ennemy;
@@ -125,8 +119,6 @@ int main()
 
     sf::Vector2f speed_chara = { 0.f,0.f };
     sf::Vector2f speed_ennemy = { 0.f,0.f };
-
-    window.setFramerateLimit(60);
 
     window.setKeyRepeatEnabled(false);
     window.setFramerateLimit(60);
@@ -140,7 +132,6 @@ int main()
     texture_character.loadFromFile("characters.png");
     Texture texture_sword;
     texture_sword.loadFromFile("sword.png");
-
 
     std::vector<Vector2f> posEnnemy = {
         {350,400},
@@ -156,10 +147,9 @@ int main()
 
     posEnnemy.~vector();
 
-    int WidthView = 300;
-    int HeightView = 300;
+    int WidthView = 1000;
+    int HeightView = 1000;
     sf::View viewchara(sf::FloatRect(chara.getPosition().x-(WidthView/2 -(tile_size/2)*4), chara.getPosition().y-(HeightView / 2 - (tile_size / 2) * 4), WidthView, HeightView));
-
 
     Sprite sprite;
     sprite.setTexture(texture);
@@ -177,8 +167,6 @@ int main()
         sol.push_back(tmp);
     }
 
-    
-
     while (window.isOpen() && chara.is_alive())
     {
         sf::Event event;
@@ -192,10 +180,7 @@ int main()
             {
                 chara.attak(event);
             }
-            
-        }
-
-        
+        } 
         chara.collision_border(scale, tile_size);
         chara.anim_chara(texture_character, clock_chara, tile_size);
 
@@ -205,18 +190,11 @@ int main()
             ennemie.passing_ennemy(clock_ennemy);
             ennemie.invinsibiliter();
         }
-       
-
         entity_hit(chara, ennemie);
         chara.invinsibiliter();
-        
-
         viewchara.move(chara.getSpeed().x, chara.getSpeed().y);
         window.setView(viewchara);
-        
-        drawAll(window, sol, level_element, chara, ennemie);
-        
-        
+        drawAll(window, sol, level_element, chara, ennemie);     
     }
 
     return 0;

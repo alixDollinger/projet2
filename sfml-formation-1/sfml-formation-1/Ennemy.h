@@ -16,5 +16,7 @@ private:
     std::vector<sf::Vector2f> posEnnemy;
     int ennemy_des = 0;
     bool aller = true;
+    sf::Clock pause;
+    bool mouv = true;
 };
 
