@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "ProgressBar.h"
 class Entity : public sf::Drawable, public sf::Transformable
 {
 public:
@@ -26,9 +27,11 @@ protected:
 	bool invincible = false;
 	sf::Clock invincible_timing;
 	float invinsible_time = 1;
-	int pv;
+	float pv;
+	float pv_max;
 	// 0 down; 1 up; 2 right; 3 left
 	int direction_anim = 0;
 	//0 arret; 1 right; 2 left
 	int state_anime = 0;
+	ProgressBar hp_bar;
 };

@@ -10,6 +10,7 @@ Entity::Entity(sf::Texture& _texture, std::string _code, int _scale, int _tile_s
     sf::Vector2i offset = character::chara_offset.at(chara_name);
 
     sprite.setTextureRect(sf::IntRect(sf::Vector2i(offset.x * _tile_size, offset.y * _tile_size), sf::Vector2i(_tile_size, _tile_size)));
+    hp_bar = ProgressBar(16.f, sprite);
 }
 
 Entity::~Entity()
@@ -41,6 +42,7 @@ void Entity::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     states.transform *= getTransform();
     target.draw(sprite);
+    target.draw(hp_bar);
 }
 
 void Entity::update()
@@ -48,6 +50,7 @@ void Entity::update()
     if (is_alive())
     {
         sprite.move(speed);
+        hp_bar.update(sprite, pv, pv_max);
     }
     
 }

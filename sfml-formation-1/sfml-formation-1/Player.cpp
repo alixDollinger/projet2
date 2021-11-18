@@ -9,8 +9,8 @@ Player::Player(sf::Texture& _texture_chara, sf::Texture& _texture_sword, std::st
     sprite_sword.setTextureRect(sf::IntRect(sf::Vector2i(0, 0), sf::Vector2i(104, 32)));
     sprite_sword.setOrigin(sf::Vector2f(0, 16));
     sprite_sword.setPosition(sf::Vector2f(sprite.getPosition().x +8*4 , sprite.getPosition().y+8*4));
-    pv = 3;
-
+    pv = 10;
+    pv_max = 10;
 
 }
 
