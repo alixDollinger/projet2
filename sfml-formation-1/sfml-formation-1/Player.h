@@ -11,7 +11,7 @@ public:
     ~Player();
 
     void movement_player(sf::Event& event);
-    void movement_cheval(sf::Event& event);
+    void input_cheval(sf::Event& event);
     void attak(sf::Event& event);
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
     void update();

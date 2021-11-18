@@ -111,8 +111,8 @@ void entity_hit(Player& chara, Ennemy& ennemy) {
 
 int main()
 {  
-    sf::RenderWindow window(sf::VideoMode(768, 512), "SFML works!");
-    sf::Clock clock_chara;
+    sf::RenderWindow window(sf::VideoMode(768, 512), "SFML works!");                    //initialisation des Variables, des Textures et Construction des objets
+    sf::Clock clock_chara;  
     sf::Clock clock_ennemy;
     std::string chara_code = "NU";
     std::string enemy_code = "SK";
@@ -135,7 +135,7 @@ int main()
     Texture texture_sword;
     texture_sword.loadFromFile("Asset/sword.png");
 
-    std::vector<Vector2f> posEnnemy = {
+    std::vector<Vector2f> posEnnemy = {                     //Position du déplacement de l'ennemi
         {350,400},
         {300.f,300.f},
         {250.f,190.f},
@@ -149,7 +149,7 @@ int main()
 
     posEnnemy.~vector();
 
-    int WidthView = 350;
+    int WidthView = 350;                 //Définition de la View sur le player
     int HeightView = 250;
     sf::View viewchara(sf::FloatRect(chara.getPosition().x-(WidthView/2 -(tile_size/2)*4), chara.getPosition().y-(HeightView / 2 - (tile_size / 2) * 4), WidthView, HeightView));
 
@@ -169,28 +169,28 @@ int main()
         sol.push_back(tmp);
     }
 
-    while (window.isOpen() && chara.is_alive())
+    while (window.isOpen() && chara.is_alive())             //Boucle du Jeu
     {
         sf::Event event;
         while (window.pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
                 window.close();
-            if (chara.getCheval() == 0) {
+            if (chara.getCheval() == 0) {                   //Vérification de l'état de mobilité
                 chara.movement_player(event);
                 
             }
             if (chara.getCheval() == 1) {
-                chara.movement_cheval(event);
+                chara.input_cheval(event);
             }
-            if (!chara.getAttaquer())
+            if (!chara.getAttaquer())                       //Vérification pour l'attaque
             {
                 chara.attak(event);
             }
             if (event.type == sf::Event::KeyPressed)
                 switch (event.key.code)
                 {
-                case sf::Keyboard::B:
+                case sf::Keyboard::B:                      //Changement d'état de mobilité
                     if (chara.getCheval() == 0) {
                         chara.setcheval(true);
                     }
@@ -201,24 +201,24 @@ int main()
                 }
         }
 
-        chara.collision_border(scale, tile_size, map_max_x, map_max_y);
-        chara.anim_chara(texture_character, clock_chara, tile_size);
+        chara.collision_border(scale, tile_size, map_max_x, map_max_y);     //Vérification pour la bordure
+        chara.anim_chara(texture_character, clock_chara, tile_size);        //Animation du Player
 
-        if (ennemie.is_alive())
+        if (ennemie.is_alive())             //Vérification si l'ennemi est en vie
         {
-            ennemie.anim_chara(texture_character, clock_ennemy, tile_size);
-            ennemie.passing_ennemy(clock_ennemy);
-            ennemie.invinsibiliter();
+            ennemie.anim_chara(texture_character, clock_ennemy, tile_size);             //Animation
+            ennemie.passing_ennemy(clock_ennemy);                                       //Temps d'attente pour les déplacements
+            ennemie.invinsibiliter();                                                   //Vérification de l'état d'invincibilté de l'ennemi pour une nouvelle touche par l'épée
         }
-        if (chara.getCheval() == 1) {
+        if (chara.getCheval() == 1) {                   //Application des Forces si le joueur est sur le cheval
             chara.movepoussee();
         }
 
         entity_hit(chara, ennemie);
         chara.invinsibiliter();
-        viewchara.move(chara.getSpeed().x, chara.getSpeed().y);
+        viewchara.move(chara.getSpeed().x, chara.getSpeed().y);                         //Application de la vitesse du joueur sur la caméra pour garder le focus
         window.setView(viewchara);
-        drawAll(window, sol, level_element, chara, ennemie, map_max_x, map_max_y);
+        drawAll(window, sol, level_element, chara, ennemie, map_max_x, map_max_y);      //Redessiner le tout
     }
 
     return 0;

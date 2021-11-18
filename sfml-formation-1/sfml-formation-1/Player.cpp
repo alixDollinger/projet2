@@ -11,13 +11,11 @@ Player::Player(sf::Texture& _texture_chara, sf::Texture& _texture_sword, std::st
     sprite_sword.setPosition(sf::Vector2f(sprite.getPosition().x +8*4 , sprite.getPosition().y+8*4));
     pv = 10;
     pv_max = 10;
-
 }
 
 Player::~Player()
 {
 }
-
 
 void Player::movement_player(sf::Event& event)
 {
@@ -58,11 +56,9 @@ void Player::movement_player(sf::Event& event)
             break;
         }
     }
-
-
 }
 
-void Player::movement_cheval(sf::Event& event) {
+void Player::input_cheval(sf::Event& event) {
     if (event.type == sf::Event::KeyPressed)
     {
         switch (event.key.code)
@@ -100,16 +96,10 @@ void Player::movement_cheval(sf::Event& event) {
             break;
         }
     }
-
-    
-    //acceleration.x = poussee * cos(angle_direction);
-    //acceleration.y = poussee * sin(angle_direction);
-    // acceleration.x = ((1 / masse) * poussee) - ((1.05 / masse) * speed.x);
-
 }
+
 void Player::movepoussee(){
     int pousseex, pousseey;
-
     switch (directionKey)
     {
     case 1:
@@ -126,18 +116,8 @@ void Player::movepoussee(){
     pousseey = poussee * sin(angle_direction);
     acceleration.x = ((1 / masse) * pousseex) - ((1.05 / masse) * speed.x);
     acceleration.y = ((1 / masse) * pousseey) - ((1.05 / masse) * speed.y);
-
     speed.x += acceleration.x;
     speed.y += acceleration.y;
-    //speed.x = speed.x * 0.90;
-    //speed.y = speed.y * 0.90;
-    std::cout <<"speed x = " << speed.x << "\n";
-    std::cout << "speed y = " << speed.y << "\n";
-    std::cout << "acceleration x = " << acceleration.x << "\n";
-    std::cout << "acceleration y = " << acceleration.y << "\n";
-    std::cout << "poussee = " << poussee << "\n";
-    std::cout << "directionKey = " << directionKey << "\n";
-    
 }
 
 void Player::attak(sf::Event& event)
