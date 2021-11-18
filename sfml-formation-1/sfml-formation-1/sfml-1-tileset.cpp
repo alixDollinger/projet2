@@ -11,20 +11,20 @@
 using namespace sf;
 /*
 Dans cet example, vous allez devoir charger et afficher un tileset
-Vous devrez charger plusieurs sprites, de préférences dans un vector<>.
+Vous devrez charger plusieurs sprites, de prÃ©fÃ©rences dans un vector<>.
 Vous devrez utiliser la fonction Sprite::setTextureRect() qui prend un IntRect en argument.
 
 Un IntRect est un struct POD (plain old data type) contenant une origine et une taille, en entier.
 
-Cette fonction permet de n'afficher que une certaine région de texture dans votre Sprite.
+Cette fonction permet de n'afficher que une certaine rÃ©gion de texture dans votre Sprite.
 
-Je vous ai fourni un niveau à charger, une std::map<string,string> et une std::map<string, Vector2i> préremplies, et une image qui permet de visualiser la disposition des tiles.
+Je vous ai fourni un niveau Ã  charger, une std::map<string,string> et une std::map<string, Vector2i> prÃ©remplies, et une image qui permet de visualiser la disposition des tiles.
 
-Votre travail consiste à écrire la fonction load_level(), qui doit:
+Votre travail consiste Ã  Ã©crire la fonction load_level(), qui doit:
 * instancier les Sprite et appeler la fonction setTextureRect() sur chacun d'entre eux.
 * positionner les Sprites
 Les tiles font 16x16px, il faudra donc multiplier par 16 les offset fournis dans la map
-Il sera nécessaire de charger deux grilles de tiles, la première étant celle du sol, et l'autre des objets.
+Il sera nÃ©cessaire de charger deux grilles de tiles, la premiÃ¨re Ã©tant celle du sol, et l'autre des objets.
 
 */
 
@@ -68,9 +68,9 @@ void load_level(std::vector<std::vector<Sprite> >& level_element, Texture& textu
 
 void drawAll(sf::RenderWindow& window, std::vector<std::vector<Sprite> >& sol, std::vector<std::vector<Sprite> >& level_element, Player& chara, Ennemy& ennemie ) {
     window.clear();
-    for (int y = 0; y < 8; y++) {
+    for (int y = 0; y < 9; y++) {
 
-        for (int x = 0; x < 12; x++) {
+        for (int x = 0; x < 13; x++) {
             window.draw(sol[y][x]);
             window.draw(level_element[y][x]);
         }
@@ -158,9 +158,9 @@ int main()
     std::vector<std::vector<Sprite> > sol;
     std::vector<std::vector<Sprite> > level_element;
     load_level(level_element,texture,scale, tile_size);
-    for (int y = 0; y < 8; y++) {
+    for (int y = 0; y < 15; y++) {
         std::vector<Sprite> tmp;
-        for (int x = 0; x < 12; x++) {
+        for (int x = 0; x < 13; x++) {
             sprite.setPosition(x * tile_size * scale, y * tile_size * scale);
             tmp.push_back(sprite);
         }
@@ -174,13 +174,34 @@ int main()
         {
             if (event.type == sf::Event::Closed)
                 window.close();
-            chara.movement_player(event);
-
+            if (chara.getCheval() == 0) {
+                chara.movement_player(event);
+                
+            }
+            if (chara.getCheval() == 1) {
+                chara.movement_cheval(event);
+            }
             if (!chara.getAttaquer())
             {
                 chara.attak(event);
             }
-        } 
+            if (event.type == sf::Event::KeyPressed)
+                switch (event.key.code)
+                {
+                case sf::Keyboard::B:
+                    if (chara.getCheval() == 0) {
+                        chara.setcheval(true);
+                    }
+                    else if (chara.getCheval() == 1) {
+                        chara.setcheval(false);
+                    }
+                    break;
+                }
+
+            
+        }
+
+        
         chara.collision_border(scale, tile_size);
         chara.anim_chara(texture_character, clock_chara, tile_size);
 
@@ -190,6 +211,10 @@ int main()
             ennemie.passing_ennemy(clock_ennemy);
             ennemie.invinsibiliter();
         }
+        if (chara.getCheval() == 1) {
+            chara.movepoussee();
+        }
+
         entity_hit(chara, ennemie);
         chara.invinsibiliter();
         viewchara.move(chara.getSpeed().x, chara.getSpeed().y);
