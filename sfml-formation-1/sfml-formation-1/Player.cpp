@@ -138,8 +138,6 @@ void Player::movepoussee(){
     std::cout << "poussee = " << poussee << "\n";
     std::cout << "directionKey = " << directionKey << "\n";
     
-
-
 }
 
 void Player::attak(sf::Event& event)

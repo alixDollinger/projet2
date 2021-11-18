@@ -119,13 +119,15 @@ namespace level {
     std::vector<std::string> tile_strings = {
         "   GS GS                FW FC A2 -- -- ",
         "      GS GS       tt    F7 FS S2 -- -- ",
-        "                  tb    tt    FW FC -- ",
-        "   T1 T2    FL          tm    F7 FS -- ",
-        "   T3 T4          GS    tb    F1 FN -- ",
+        "                  tb    tt    FW FC A2 ",
+        "   T1 T2    FL          tm    F7 FS S2 ",
+        "   T3 T4          GS    tb    F1 FN FN ",
         "                     F1 FN FN A4 -- -- ",
         "      R1 R2    F1 FN A4 -- -- -- -- -- ",
-        "R1 RH R4 R3 R2 FW -- -- -- -- -- -- -- ",
-        "R1 RH R4 R3 R2 FW -- -- -- -- -- -- -- ",
+        "R1 RH R4 R3 R2 FW FC FC FC FC FC FC A2 ",
+        "RV          RV F7 FS FS FS FS FS FS S2 ",
+        "R3 RH R2    RV                   d1 FW ",
+        "      R3 RH R4          FL FL    F1 A4 ",
 
     };
 }

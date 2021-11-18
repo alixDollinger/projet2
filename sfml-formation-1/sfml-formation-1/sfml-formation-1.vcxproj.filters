@@ -15,13 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="sfml-example-1.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="sfml-1-tileset.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="sfml-2-animation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ProgressBar.cpp">

@@ -19,8 +19,8 @@ Entity::~Entity()
 
 
 
-void Entity::collision_border(int scale, int tile_size) {
-    if (sprite.getPosition().x + tile_size * scale >= 768 && speed.x >= 0)
+void Entity::collision_border(int& scale, int& tile_size,int& map_max_x,int& map_max_y) {
+    if (sprite.getPosition().x + tile_size * scale >= map_max_x * tile_size * scale && speed.x >= 0)
     {
         speed.x = 0;
     }
@@ -28,7 +28,7 @@ void Entity::collision_border(int scale, int tile_size) {
     {
         speed.x = 0;
     }
-    if (sprite.getPosition().y + tile_size * scale >= 512 && speed.y >= 0)
+    if (sprite.getPosition().y + tile_size * scale >= map_max_y * tile_size * scale && speed.y >= 0)
     {
         speed.y = 0;
     }

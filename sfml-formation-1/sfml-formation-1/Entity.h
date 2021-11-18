@@ -9,7 +9,7 @@ public:
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	void update();
-	void collision_border(int scale, int tile_size);
+	void collision_border(int& scale, int& tile_size, int& map_max_x, int& map_max_y);
 	void anim_chara(sf::Texture& texture, sf::Clock& clock, int tile_size);
 	sf::Sprite& getSprite() { return sprite; };
 	sf::Vector2f getSpeed() { return speed; };

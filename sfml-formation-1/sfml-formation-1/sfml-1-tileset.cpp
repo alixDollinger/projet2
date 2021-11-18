@@ -66,11 +66,11 @@ void load_level(std::vector<std::vector<Sprite> >& level_element, Texture& textu
     }
 }
 
-void drawAll(sf::RenderWindow& window, std::vector<std::vector<Sprite> >& sol, std::vector<std::vector<Sprite> >& level_element, Player& chara, Ennemy& ennemie ) {
+void drawAll(sf::RenderWindow& window, std::vector<std::vector<Sprite> >& sol, std::vector<std::vector<Sprite> >& level_element, Player& chara, Ennemy& ennemie, int& map_max_x, int& map_max_y) {
     window.clear();
-    for (int y = 0; y < 9; y++) {
+    for (int y = 0; y < map_max_y; y++) {
 
-        for (int x = 0; x < 13; x++) {
+        for (int x = 0; x < map_max_x; x++) {
             window.draw(sol[y][x]);
             window.draw(level_element[y][x]);
         }
@@ -125,13 +125,15 @@ int main()
 
     int scale = 4;
     int tile_size = 16;
+    int map_max_x = 13;
+    int map_max_y = 11;
 
     Texture texture;
-    texture.loadFromFile("foresttiles2-t.png");
+    texture.loadFromFile("Asset/foresttiles2-t.png");
     Texture texture_character;
-    texture_character.loadFromFile("characters.png");
+    texture_character.loadFromFile("Asset/characters.png");
     Texture texture_sword;
-    texture_sword.loadFromFile("sword.png");
+    texture_sword.loadFromFile("Asset/sword.png");
 
     std::vector<Vector2f> posEnnemy = {
         {350,400},
@@ -147,8 +149,8 @@ int main()
 
     posEnnemy.~vector();
 
-    int WidthView = 1000;
-    int HeightView = 1000;
+    int WidthView = 350;
+    int HeightView = 250;
     sf::View viewchara(sf::FloatRect(chara.getPosition().x-(WidthView/2 -(tile_size/2)*4), chara.getPosition().y-(HeightView / 2 - (tile_size / 2) * 4), WidthView, HeightView));
 
     Sprite sprite;
@@ -158,9 +160,9 @@ int main()
     std::vector<std::vector<Sprite> > sol;
     std::vector<std::vector<Sprite> > level_element;
     load_level(level_element,texture,scale, tile_size);
-    for (int y = 0; y < 15; y++) {
+    for (int y = 0; y < map_max_y; y++) {
         std::vector<Sprite> tmp;
-        for (int x = 0; x < 13; x++) {
+        for (int x = 0; x < map_max_x; x++) {
             sprite.setPosition(x * tile_size * scale, y * tile_size * scale);
             tmp.push_back(sprite);
         }
@@ -197,12 +199,9 @@ int main()
                     }
                     break;
                 }
-
-            
         }
 
-        
-        chara.collision_border(scale, tile_size);
+        chara.collision_border(scale, tile_size, map_max_x, map_max_y);
         chara.anim_chara(texture_character, clock_chara, tile_size);
 
         if (ennemie.is_alive())
@@ -219,7 +218,7 @@ int main()
         chara.invinsibiliter();
         viewchara.move(chara.getSpeed().x, chara.getSpeed().y);
         window.setView(viewchara);
-        drawAll(window, sol, level_element, chara, ennemie);     
+        drawAll(window, sol, level_element, chara, ennemie, map_max_x, map_max_y);
     }
 
     return 0;
