@@ -1,6 +1,7 @@
 #pragma once
 #include "Entity.h"
 #include "Ennemy.h"
+
 class Player :
     public Entity
 {
@@ -14,13 +15,15 @@ public:
     void attak(sf::Event& event);
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
     void update();
-    void anim_attack();
+    void anim_attack(Ennemy& enemy);
     bool& getAttaquer() { return attaquer; };
     sf::Clock& getTimingAtk() { return timing_atk; };
-    void hitEnnemy(Ennemy& ennemy);
+
     bool& getCheval() { return etat_cheval; };
     void setcheval(bool etat) { etat_cheval = etat; }
     void movepoussee();
+    sf::Sprite& getSprite_sword() { return sprite_sword; }
+
 private:
     int atk = 3;
     float atk_speed = 0.5;

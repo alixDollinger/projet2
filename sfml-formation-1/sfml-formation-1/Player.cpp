@@ -9,7 +9,9 @@ Player::Player(sf::Texture& _texture_chara, sf::Texture& _texture_sword, std::st
     sprite_sword.setTextureRect(sf::IntRect(sf::Vector2i(0, 0), sf::Vector2i(104, 32)));
     sprite_sword.setOrigin(sf::Vector2f(0, 16));
     sprite_sword.setPosition(sf::Vector2f(sprite.getPosition().x +8*4 , sprite.getPosition().y+8*4));
-    pv = 3;
+    pv = 10;
+    pv_max = 10;
+
 }
 
 Player::~Player()
@@ -166,12 +168,16 @@ void Player::update()
     sprite_sword.move(speed);
 }
 
-void Player::anim_attack()
+void Player::anim_attack(Ennemy& enemy)
 {
     if (timing_atk.getElapsedTime().asSeconds() >= atk_speed && etat_anim_atk)
     {
         etat_anim_atk = false;
         attaquer = false;
+        if (enemy.getIs_it())
+        {
+            enemy.setIs_it(false);
+        }
     }
 
     if (!etat_anim_atk)
@@ -211,12 +217,6 @@ void Player::anim_attack()
             break;
         }
     }
-}
-
-void Player::hitEnnemy(Ennemy& ennemy)
-{
-    
-
 }
 
 

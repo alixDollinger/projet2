@@ -1,5 +1,6 @@
 #pragma once
 #include "Entity.h"
+
 class Ennemy :
     public Entity
 {
@@ -11,10 +12,11 @@ public:
 
     void move_ennemy(sf::Vector2f& destination, sf::Clock& clock);
 
-
 private:
     std::vector<sf::Vector2f> posEnnemy;
     int ennemy_des = 0;
     bool aller = true;
+    sf::Clock pause;
+    bool mouv = true;
 };
 

@@ -11,20 +11,20 @@
 using namespace sf;
 /*
 Dans cet example, vous allez devoir charger et afficher un tileset
-Vous devrez charger plusieurs sprites, de préférences dans un vector<>.
+Vous devrez charger plusieurs sprites, de prÃ©fÃ©rences dans un vector<>.
 Vous devrez utiliser la fonction Sprite::setTextureRect() qui prend un IntRect en argument.
 
 Un IntRect est un struct POD (plain old data type) contenant une origine et une taille, en entier.
 
-Cette fonction permet de n'afficher que une certaine région de texture dans votre Sprite.
+Cette fonction permet de n'afficher que une certaine rÃ©gion de texture dans votre Sprite.
 
-Je vous ai fourni un niveau à charger, une std::map<string,string> et une std::map<string, Vector2i> préremplies, et une image qui permet de visualiser la disposition des tiles.
+Je vous ai fourni un niveau Ã  charger, une std::map<string,string> et une std::map<string, Vector2i> prÃ©remplies, et une image qui permet de visualiser la disposition des tiles.
 
-Votre travail consiste à écrire la fonction load_level(), qui doit:
+Votre travail consiste Ã  Ã©crire la fonction load_level(), qui doit:
 * instancier les Sprite et appeler la fonction setTextureRect() sur chacun d'entre eux.
 * positionner les Sprites
 Les tiles font 16x16px, il faudra donc multiplier par 16 les offset fournis dans la map
-Il sera nécessaire de charger deux grilles de tiles, la première étant celle du sol, et l'autre des objets.
+Il sera nÃ©cessaire de charger deux grilles de tiles, la premiÃ¨re Ã©tant celle du sol, et l'autre des objets.
 
 */
 
@@ -76,17 +76,41 @@ void drawAll(sf::RenderWindow& window, std::vector<std::vector<Sprite> >& sol, s
         }
 
     }
-
+    
+    if (ennemie.is_alive())
+    {
+        window.draw(ennemie);
+        ennemie.update();
+    }
     window.draw(chara);
-    window.draw(ennemie);
     chara.update();
-    ennemie.update();
     window.display();
 }
 
+void entity_hit(Player& chara, Ennemy& ennemy) {
+    if (chara.getAttaquer())
+    {
+        chara.anim_attack(ennemy);
+
+        if (chara.getSprite_sword().getGlobalBounds().intersects(ennemy.getSprite().getGlobalBounds()) && !ennemy.getIs_it() && !ennemy.getInvincible() && ennemy.is_alive())
+        {
+
+            ennemy.setIs_it(true);
+            ennemy.take_damage(1);
+        }
+
+    }
+    else if (ennemy.getSprite().getGlobalBounds().intersects(chara.getSprite().getGlobalBounds()) && !chara.getIs_it() && !chara.getInvincible() && ennemy.is_alive())
+    {
+        chara.setIs_it(true);
+        chara.take_damage(1);
+
+    }
+
+}
+
 int main()
-{
-    
+{  
     sf::RenderWindow window(sf::VideoMode(768, 512), "SFML works!");
     sf::Clock clock_chara;
     sf::Clock clock_ennemy;
@@ -95,8 +119,6 @@ int main()
 
     sf::Vector2f speed_chara = { 0.f,0.f };
     sf::Vector2f speed_ennemy = { 0.f,0.f };
-
-    window.setFramerateLimit(60);
 
     window.setKeyRepeatEnabled(false);
     window.setFramerateLimit(60);
@@ -110,7 +132,6 @@ int main()
     texture_character.loadFromFile("characters.png");
     Texture texture_sword;
     texture_sword.loadFromFile("sword.png");
-
 
     std::vector<Vector2f> posEnnemy = {
         {350,400},
@@ -126,10 +147,9 @@ int main()
 
     posEnnemy.~vector();
 
-    int WidthView = 300;
-    int HeightView = 300;
+    int WidthView = 1000;
+    int HeightView = 1000;
     sf::View viewchara(sf::FloatRect(chara.getPosition().x-(WidthView/2 -(tile_size/2)*4), chara.getPosition().y-(HeightView / 2 - (tile_size / 2) * 4), WidthView, HeightView));
-
 
     Sprite sprite;
     sprite.setTexture(texture);
@@ -147,9 +167,7 @@ int main()
         sol.push_back(tmp);
     }
 
-    
-
-    while (window.isOpen())
+    while (window.isOpen() && chara.is_alive())
     {
         sf::Event event;
         while (window.pollEvent(event))
@@ -186,26 +204,22 @@ int main()
         
         chara.collision_border(scale, tile_size);
         chara.anim_chara(texture_character, clock_chara, tile_size);
-        /*ennemie.anim_chara(texture_character, clock_ennemy, tile_size);
-        ennemie.passing_ennemy(clock_ennemy);*/
-        if (chara.getAttaquer())
+
+        if (ennemie.is_alive())
         {
-            chara.anim_attack();
-            if (chara.getTimingAtk().getElapsedTime().asSeconds() <= 0.25 +0.05 && chara.getTimingAtk().getElapsedTime().asSeconds() <= 0.25 + 0.05) {
-                chara.hitEnnemy(ennemie);
-            }
-            
+            ennemie.anim_chara(texture_character, clock_ennemy, tile_size);
+            ennemie.passing_ennemy(clock_ennemy);
+            ennemie.invinsibiliter();
         }
         if (chara.getCheval() == 1) {
             chara.movepoussee();
         }
 
+        entity_hit(chara, ennemie);
+        chara.invinsibiliter();
         viewchara.move(chara.getSpeed().x, chara.getSpeed().y);
         window.setView(viewchara);
-        
-        drawAll(window, sol, level_element, chara, ennemie);
-        
-        
+        drawAll(window, sol, level_element, chara, ennemie);     
     }
 
     return 0;
